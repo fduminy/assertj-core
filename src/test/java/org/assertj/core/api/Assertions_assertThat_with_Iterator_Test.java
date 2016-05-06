@@ -149,6 +149,25 @@ public class Assertions_assertThat_with_Iterator_Test {
   }
   
   @Test
+  public void isSameAs_should_check_the_original_iterator_without_consuming_it() {
+    Iterator<?> iterator = mock(Iterator.class);
+    assertThat(iterator).isSameAs(iterator);
+    verifyZeroInteractions(iterator);
+  }
+  
+  @Test
+  public void isNotSameAs_should_check_the_original_iterator_without_consuming_it() {
+    Iterator<?> iterator = mock(Iterator.class);
+    try{
+      assertThat(iterator).isNotSameAs(iterator);
+    } catch(AssertionError e){
+      verifyZeroInteractions(iterator);
+      return;
+    }
+    Assertions.fail("Expected assertionError, because assert notSame on same iterator.");
+  }
+  
+  @Test
   public void iterator_can_be_asserted_twice_even_though_it_can_be_iterated_only_once() {
     Iterator<String> names = asList("Luke", "Leia").iterator();
     assertThat(names).containsExactly("Luke", "Leia").containsExactly("Luke", "Leia");
