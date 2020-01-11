@@ -509,6 +509,23 @@ Copyright ${inceptionYear}-${currentYear} the original author or authors.
             </lifecycleMappingMetadata>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.pitest</groupId>
+          <artifactId>pitest-maven</artifactId>
+          <version>1.4.10</version>
+          <configuration>
+            <targetClasses>
+              <param>org.assertj.core.*</param>
+            </targetClasses>
+            <excludedClasses>
+              <param>org.assertj.core.internal.asm.*</param>
+              <param>org.assertj.core.internal.cglib.*</param>
+            </excludedClasses>
+            <targetTests>
+              <param>org.assertj.core.*</param>
+            </targetTests>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
@@ -567,6 +584,25 @@ Copyright ${inceptionYear}-${currentYear} the original author or authors.
       <properties>
         <javadocAdditionalOptions>-html5 --allow-script-in-comments</javadocAdditionalOptions>
       </properties>
+    </profile>
+    <profile>
+      <id>pitest-analysis</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-maven</artifactId>
+            <executions>
+              <execution>
+                <phase>test</phase>
+                <goals>
+                  <goal>mutationCoverage</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>
